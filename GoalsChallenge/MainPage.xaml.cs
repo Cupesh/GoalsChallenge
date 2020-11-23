@@ -10,40 +10,44 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace GoalsChallenge
 {
     public partial class MainPage : ContentPage
     {
-        public const string Url = "https://api.football-data.org/v2/competitions/PL/scorers";
-        private List<Player> _players = new List<Player>();
+        public const string Url = "https://raw.githubusercontent.com/openfootball/football.json/master/2015-16/en.1.json";
+        private List<Match> _matches = new List<Match>();
         public MainPage()
         {
             
             InitializeComponent();
             GetData();
-
-            listView.ItemsSource = _players;
+            
 
         }
 
         async public void GetData()
         {
             var httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Add("X-Auth-Token", "54d5ac43b2e44aed8c081f8ba4b7d2ad");
 
             var content = await httpClient.GetStringAsync(Url);
-            var data = JObject.Parse(content);
-            var data2 = data["scorers"].ToList();
-            foreach (JObject child in data2)
+
+            JObject data = JObject.Parse(content);
+
+            titleLabel.Text = data.SelectToken($"$.name").ToString();
+
+            for (int i = 0; i < 10; i++)
             {
-                var name = child["player"]["name"].ToString();
-                string fullName = Convert.ToString(name);
+                string teamOne = data.SelectToken($"$..rounds[0].matches[{i}].team1").ToString();
+                string teamTwo = data.SelectToken($"$..rounds[0].matches[{i}].team2").ToString();
+                string score1 = data.SelectToken($"$..rounds[0].matches[{i}].score.ft[0]").ToString();
+                string score2 = data.SelectToken($"$..rounds[0].matches[{i}].score.ft[1]").ToString();
+                string score = $"{score1} : {score2}";
 
-                _players.Add(new Player { Name = fullName });
+                _matches.Add(new Match { TeamOne = teamOne, TeamTwo = teamTwo, Score = score });
             }
-
-            listView.ItemsSource = _players;
+            listView.ItemsSource = _matches;
         }
     }
 }
