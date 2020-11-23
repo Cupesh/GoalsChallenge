@@ -16,7 +16,7 @@ namespace GoalsChallenge
 {
     public partial class MainPage : ContentPage
     {
-        public const string Url = "https://raw.githubusercontent.com/openfootball/football.json/master/2015-16/en.1.json";
+        public const string Url = "https://raw.githubusercontent.com/openfootball/football.json/master/2017-18/en.1.json";
         private List<Match> _matches = new List<Match>();
         public MainPage()
         {
