@@ -42,6 +42,7 @@ namespace GoalsChallenge
                     string score1 = data.SelectToken($"$..rounds[{i}].matches[{j}].score.ft[0]").ToString();
                     string score2 = data.SelectToken($"$..rounds[{i}].matches[{j}].score.ft[1]").ToString();
                     string score = $"{score1} : {score2}";
+
                     _matches.Add(new Match { TeamOne = teamOne, TeamTwo = teamTwo, Score = score });
                 } 
             }
