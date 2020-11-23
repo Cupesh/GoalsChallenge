@@ -37,15 +37,17 @@ namespace GoalsChallenge
 
             titleLabel.Text = data.SelectToken($"$.name").ToString();
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 38; i++)
             {
-                string teamOne = data.SelectToken($"$..rounds[0].matches[{i}].team1").ToString();
-                string teamTwo = data.SelectToken($"$..rounds[0].matches[{i}].team2").ToString();
-                string score1 = data.SelectToken($"$..rounds[0].matches[{i}].score.ft[0]").ToString();
-                string score2 = data.SelectToken($"$..rounds[0].matches[{i}].score.ft[1]").ToString();
-                string score = $"{score1} : {score2}";
-
-                _matches.Add(new Match { TeamOne = teamOne, TeamTwo = teamTwo, Score = score });
+                for (int j = 0; j < 10; j++)
+                {
+                    string teamOne = data.SelectToken($"$..rounds[{i}].matches[{j}].team1").ToString();
+                    string teamTwo = data.SelectToken($"$..rounds[{i}].matches[{j}].team2").ToString();
+                    string score1 = data.SelectToken($"$..rounds[{i}].matches[{j}].score.ft[0]").ToString();
+                    string score2 = data.SelectToken($"$..rounds[{i}].matches[{j}].score.ft[1]").ToString();
+                    string score = $"{score1} : {score2}";
+                    _matches.Add(new Match { TeamOne = teamOne, TeamTwo = teamTwo, Score = score });
+                } 
             }
             listView.ItemsSource = _matches;
         }
