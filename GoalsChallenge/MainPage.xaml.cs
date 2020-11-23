@@ -20,17 +20,13 @@ namespace GoalsChallenge
         private List<Match> _matches = new List<Match>();
         public MainPage()
         {
-            
             InitializeComponent();
             GetData();
-            
-
         }
 
         async public void GetData()
         {
             var httpClient = new HttpClient();
-
             var content = await httpClient.GetStringAsync(Url);
 
             JObject data = JObject.Parse(content);
@@ -49,6 +45,7 @@ namespace GoalsChallenge
                     _matches.Add(new Match { TeamOne = teamOne, TeamTwo = teamTwo, Score = score });
                 } 
             }
+
             listView.ItemsSource = _matches;
         }
     }
